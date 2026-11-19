@@ -1,0 +1,57 @@
+{
+	"name": "DF_Cleanse_Orders",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Blob_Orders",
+						"type": "DatasetReference"
+					},
+					"name": "JanOrders"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "ValidOrders"
+				},
+				{
+					"name": "derivedColumn"
+				},
+				{
+					"name": "cast1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          OrderId as string,",
+				"          CustomerId as string,",
+				"          ProductId as string,",
+				"          OrderDate as string,",
+				"          Quantity as string,",
+				"          UnitPrice as string,",
+				"          Discount as string,",
+				"          ShippingCost as string,",
+				"          PaymentMethod as string,",
+				"          OrderStatus as string,",
+				"          Region as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['orders/year=2024/orders_*2024.csv']) ~> JanOrders",
+				"cast1 filter(!isNull(OrderId)&&length(trim(OrderId))>0) ~> ValidOrders",
+				"ValidOrders derive(GrossRevenue = Quantity *UnitPrice,",
+				"          discountamount = Quantity*UnitPrice*Discount) ~> derivedColumn",
+				"JanOrders cast(output(",
+				"          Quantity as integer '000',",
+				"          UnitPrice as integer '000',",
+				"          Discount as double '0.00'",
+				"     ),",
+				"     errors: true) ~> cast1"
+			]
+		}
+	}
+}
