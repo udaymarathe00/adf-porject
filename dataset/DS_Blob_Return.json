@@ -1,0 +1,57 @@
+{
+	"name": "DS_Blob_Return",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BlobStorage_SHopEasy",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "returns.csv",
+				"folderPath": "Return",
+				"container": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ReturnId",
+				"type": "String"
+			},
+			{
+				"name": "OrderId",
+				"type": "String"
+			},
+			{
+				"name": "CustomerId",
+				"type": "String"
+			},
+			{
+				"name": "ProductId",
+				"type": "String"
+			},
+			{
+				"name": "ReturnDate",
+				"type": "String"
+			},
+			{
+				"name": "ReturnReason",
+				"type": "String"
+			},
+			{
+				"name": "ReturnStatus",
+				"type": "String"
+			},
+			{
+				"name": "RefundAmount",
+				"type": "String"
+			}
+		]
+	}
+}
