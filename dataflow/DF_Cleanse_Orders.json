@@ -12,7 +12,15 @@
 					"name": "JanOrders"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Fact_Orders",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "ValidOrders"
@@ -44,13 +52,51 @@
 				"     wildcardPaths:['orders/year=2024/orders_*2024.csv']) ~> JanOrders",
 				"cast1 filter(!isNull(OrderId)&&length(trim(OrderId))>0) ~> ValidOrders",
 				"ValidOrders derive(GrossRevenue = Quantity *UnitPrice,",
-				"          discountamount = Quantity*UnitPrice*Discount) ~> derivedColumn",
+				"          discountamount = Quantity*UnitPrice*Discount,",
+				"          Netrevenue = Quantity*UnitPrice* (1-Discount),",
+				"          TotalRevenue = (Quantity*UnitPrice*(1-Discount)+ShippingCost)) ~> derivedColumn",
 				"JanOrders cast(output(",
 				"          Quantity as integer '000',",
 				"          UnitPrice as integer '000',",
-				"          Discount as double '0.00'",
+				"          Discount as double '0.00',",
+				"          ShippingCost as integer '000'",
 				"     ),",
-				"     errors: true) ~> cast1"
+				"     errors: true) ~> cast1",
+				"derivedColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Orderid as string,",
+				"          CustomerId as string,",
+				"          Productid as string,",
+				"          Customername as string,",
+				"          Productname as string,",
+				"          Cetagory as string,",
+				"          Orderdate as date,",
+				"          Ordermonth as integer,",
+				"          OrderYear as integer,",
+				"          Quentity as integer,",
+				"          UnitPrice as decimal(10,2),",
+				"          Discountpct as decimal(10,2),",
+				"          Discountamount as decimal(10,2),",
+				"          GrossRevenue as decimal(10,2),",
+				"          ShippingCost as decimal(10,2),",
+				"          Netrevenue as decimal(10,2),",
+				"          CostofGoods as decimal(10,2),",
+				"          GrossProfit as decimal(10,2),",
+				"          PaymentMethord as string,",
+				"          Orderstatus as string,",
+				"          Isdelivered as boolean,",
+				"          Region as string,",
+				"          LoadAt as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
