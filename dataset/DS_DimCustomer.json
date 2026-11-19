@@ -1,0 +1,55 @@
+{
+	"name": "DS_DimCustomer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSQl_SHopEasy",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Customerid",
+				"type": "varchar"
+			},
+			{
+				"name": "Fullname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Email",
+				"type": "nvarchar"
+			},
+			{
+				"name": "City",
+				"type": "nvarchar"
+			},
+			{
+				"name": "State",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Country",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Customersegment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joindate",
+				"type": "date"
+			},
+			{
+				"name": "Loaddate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dim_Customers"
+		}
+	}
+}
