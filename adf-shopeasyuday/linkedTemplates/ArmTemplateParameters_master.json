@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-shopeasyuday"
+		},
+		"LS_AzureSQl_SHopEasy_password": {
+			"value": ""
+		},
+		"LS_BlobStorage_SHopEasy_connectionString": {
+			"value": ""
+		},
+		"LS_AzureSQl_SHopEasy_properties_typeProperties_server": {
+			"value": "sql-shopeeeasy.database.windows.net"
+		},
+		"LS_AzureSQl_SHopEasy_properties_typeProperties_database": {
+			"value": "shopeasyy"
+		},
+		"LS_AzureSQl_SHopEasy_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
