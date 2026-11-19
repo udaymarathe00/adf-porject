@@ -1,0 +1,53 @@
+{
+	"name": "DS_Fact_returns",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSQl_SHopEasy",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ReturnId",
+				"type": "varchar"
+			},
+			{
+				"name": "OrderId",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerId",
+				"type": "varchar"
+			},
+			{
+				"name": "Returndate",
+				"type": "date"
+			},
+			{
+				"name": "ReturnReason",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ReturnStatus",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RefundAmout",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "LoadAt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "fact_Returns"
+		}
+	}
+}
