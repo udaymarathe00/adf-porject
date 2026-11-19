@@ -148,20 +148,11 @@
 					"referenceName": "LS_BlobStorage_SHopEasy",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
 						"folderPath": "orders/year=2024",
 						"container": "raw"
 					},
@@ -1026,6 +1017,115 @@
 				"[concat(variables('factoryId'), '/datasets/DS_DimCustomer')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Blob_Product')]",
 				"[concat(variables('factoryId'), '/datasets/DS_DimProduct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Cleanse_Orders')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Blob_Orders",
+								"type": "DatasetReference"
+							},
+							"name": "JanOrders"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Fact_Orders",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ValidOrders"
+						},
+						{
+							"name": "derivedColumn"
+						},
+						{
+							"name": "cast1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          OrderId as string,",
+						"          CustomerId as string,",
+						"          ProductId as string,",
+						"          OrderDate as string,",
+						"          Quantity as string,",
+						"          UnitPrice as string,",
+						"          Discount as string,",
+						"          ShippingCost as string,",
+						"          PaymentMethod as string,",
+						"          OrderStatus as string,",
+						"          Region as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     wildcardPaths:['orders/year=2024/orders_*2024.csv']) ~> JanOrders",
+						"cast1 filter(!isNull(OrderId)&&length(trim(OrderId))>0) ~> ValidOrders",
+						"ValidOrders derive(GrossRevenue = Quantity *UnitPrice,",
+						"          discountamount = Quantity*UnitPrice*Discount,",
+						"          Netrevenue = Quantity*UnitPrice* (1-Discount),",
+						"          TotalRevenue = (Quantity*UnitPrice*(1-Discount)+ShippingCost)) ~> derivedColumn",
+						"JanOrders cast(output(",
+						"          Quantity as integer '000',",
+						"          UnitPrice as integer '000',",
+						"          Discount as double '0.00',",
+						"          ShippingCost as integer '000'",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"derivedColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Orderid as string,",
+						"          CustomerId as string,",
+						"          Productid as string,",
+						"          Customername as string,",
+						"          Productname as string,",
+						"          Cetagory as string,",
+						"          Orderdate as date,",
+						"          Ordermonth as integer,",
+						"          OrderYear as integer,",
+						"          Quentity as integer,",
+						"          UnitPrice as decimal(10,2),",
+						"          Discountpct as decimal(10,2),",
+						"          Discountamount as decimal(10,2),",
+						"          GrossRevenue as decimal(10,2),",
+						"          ShippingCost as decimal(10,2),",
+						"          Netrevenue as decimal(10,2),",
+						"          CostofGoods as decimal(10,2),",
+						"          GrossProfit as decimal(10,2),",
+						"          PaymentMethord as string,",
+						"          Orderstatus as string,",
+						"          Isdelivered as boolean,",
+						"          Region as string,",
+						"          LoadAt as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Blob_Orders')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Fact_Orders')]"
 			]
 		}
 	]
