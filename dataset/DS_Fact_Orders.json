@@ -1,0 +1,130 @@
+{
+	"name": "DS_Fact_Orders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSQl_SHopEasy",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Orderid",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerId",
+				"type": "varchar"
+			},
+			{
+				"name": "Productid",
+				"type": "varchar"
+			},
+			{
+				"name": "Customername",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Productname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cetagory",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Orderdate",
+				"type": "date"
+			},
+			{
+				"name": "Ordermonth",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OrderYear",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Quentity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "UnitPrice",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "Discountpct",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "Discountamount",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "GrossRevenue",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "ShippingCost",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "Netrevenue",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "CostofGoods",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "GrossProfit",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "PaymentMethord",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Orderstatus",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Isdelivered",
+				"type": "bit"
+			},
+			{
+				"name": "Region",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadAt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "fact_Orders"
+		}
+	}
+}
