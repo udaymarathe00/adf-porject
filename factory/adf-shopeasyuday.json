@@ -1,0 +1,16 @@
+{
+	"name": "adf-shopeasyuday",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true,
+			"isExplicitlySet": false
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c19d3a70-b3ad-48cb-889e-f44491fb7621",
+		"tenantId": "438ac892-2530-49f2-97c2-b49c4b069d3d"
+	}
+}
